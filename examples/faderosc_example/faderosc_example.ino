@@ -19,7 +19,8 @@
  * A2 -> "/fader/1"
  * A3 -> "/fader/2"
  *
- * ATTENTION: alwasy define these 2 macros BEFORE including FaderOSC.h! Otherwise the defines are ignored.
+ * ATTENTION: alwasy define these 2 macros BEFORE including FaderOSC.h!
+ * Otherwise these defines will be ignored.
  */
 #define OSC_ADDRESS         "/net/mhcloud/volume/jack-volume/"
 #define OSC_ADDRESS_MASTER   OSC_ADDRESS "master"

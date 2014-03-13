@@ -5,6 +5,9 @@
  * 
  * Created by Michael Hoefler, March 12, 2014.
  * For bug reports and feature requests please email me at voidseg@gmail.com
+ * 
+ * Feel free to contribute on github.com.
+ * https://github.com/voidseg/FaderOSC-Library
  */
 
 #ifndef FADEROSC_H
