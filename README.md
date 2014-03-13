@@ -11,7 +11,7 @@ analog pins can be used by this library. This number is configured with the
 template argument "NUM_POTS".
 
 Please have look at the [Arduino potentiometer tutorial](http://www.arduino.cc/en/Tutorial/Potentiometer "Arduino - Potentiometer") for how to wire up a poti to an Arduino board.
-All faders/potis must be connected this way to work with this library.
+All faders/potis must be connected this way to work with FaderOSC.
 
 The library is called "FaderOSC" because initially it was ment for using it with
 analog faders as input device. Other potentiometers or sensors connected to the
@@ -25,5 +25,5 @@ analog value. E. g.:
 
 "/faderosc/"   "2"      0.42
 
-This library was built for controlling a jack-volume instance but can be used
-for multiple purposes too.
+This library was built for controlling a jack-volume instance but can also be
+used for other purposes.
