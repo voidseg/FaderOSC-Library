@@ -1,0 +1,4 @@
+FaderOSC	KEYWORD1
+useUDP		KEYWORD2
+useSerial	KEYWORD3
+iteration	KEYWORD4
