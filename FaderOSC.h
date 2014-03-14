@@ -5,9 +5,6 @@
  * 
  * Created by Michael Hoefler, March 12, 2014.
  * For bug reports and feature requests please email me at voidseg@gmail.com
- * 
- * Feel free to contribute on github.com.
- * https://github.com/voidseg/FaderOSC-Library
  */
 
 #ifndef FADEROSC_H
@@ -94,16 +91,12 @@ public:
 	void useSerial(SLIPEncodedSerial* ser) {
 		this->ser = ser;
 	}
-	
+
 	/*
-	 * Initialize FaderOSC object with the OSC server ip address.
-	 * This function MUST be called in setup().
-	 * 
-	 * \param	server	The IP address of the OSC server.
+	 * Initialize FaderOSC object for use with serial interface only.
+	 * This function is alternative to void begin(IPAddress&)
 	 */
-	void begin(IPAddress& server) {
-		this->server = server;
-		
+	void begin() {
 		int suff = 0;
 #ifdef OSC_ADDRESS_MASTER
 		int i = 1;
@@ -125,6 +118,17 @@ public:
 #ifdef OSC_ADDRESS_MASTER
 		messages[0].setAddress(OSC_ADDRESS_MASTER);
 #endif
+	}
+
+	/*
+	 * Initialize FaderOSC object with the OSC server ip address.
+	 * This function MUST be called in setup().
+	 * 
+	 * \param	server	The IP address of the OSC server.
+	 */
+	void begin(IPAddress& server) {
+		this->server = server;
+		this->begin();
 	}
 	
 	/*

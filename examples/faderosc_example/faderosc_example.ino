@@ -19,8 +19,7 @@
  * A2 -> "/fader/1"
  * A3 -> "/fader/2"
  *
- * ATTENTION: alwasy define these 2 macros BEFORE including FaderOSC.h!
- * Otherwise these defines will be ignored.
+ * ATTENTION: alwasy define these 2 macros BEFORE including FaderOSC.h! Otherwise the defines are ignored.
  */
 #define OSC_ADDRESS         "/net/mhcloud/volume/jack-volume/"
 #define OSC_ADDRESS_MASTER   OSC_ADDRESS "master"
@@ -46,6 +45,8 @@ static EthernetUDP udp;
 static SLIPEncodedSerial SLIPSerial(Serial);
 
 void setup() {
+  // start serial interface with fast baud rate
+  Serial.begin(115200);
   // start ethernet using dhcp
   Ethernet.begin(mac);
   // start the udp server and client
