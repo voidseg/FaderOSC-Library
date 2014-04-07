@@ -29,6 +29,14 @@
 #endif
 
 /*
+ * Hook callback type.
+ *
+ * \param	intputNumber	The number of the analog input pin.
+ * \param	value		Reference to the value. You might write it.
+ */
+typedef void (*hookCallback)(uint8_t inputNumber, float& value);
+
+/*
  * This class can be used for transmitting analog values from an Arduino board
  * over UDP oder serial interface as OSC messages. This requires either a serial
  * interface or an ethernet port or both. A variable number of analog pins can
@@ -58,7 +66,8 @@ public:
 	  tcp(NULL),
 	  ser(NULL),
 	  server({192, 168, 0, 42}),
-	  port(7600)
+	  port(7600),
+	  hook(NULL)
 	{
 	}
 	~FaderOSC() {
@@ -90,6 +99,15 @@ public:
 	 */
 	void useSerial(SLIPEncodedSerial* ser) {
 		this->ser = ser;
+	}
+
+	/*
+	 * Register a callback function to hook into the control flow.
+	 * This function will be called just before an OSC packet is sent.
+	 * You can even change the value which will be transmitted.
+	 */
+	void registerHookCallback(hookCallback hook) {
+		this->hook = hook;
 	}
 
 	/*
@@ -145,6 +163,9 @@ public:
 				messages[i].empty();
 				old_vals[i] = val;
 				float f = val / (float)1023.0;
+				if (hook != NULL) {
+					hook(i, f);
+				}
 				messages[i].add(f);
 				if (messages[i].hasError()) {
 					err = -1;
@@ -179,6 +200,7 @@ private:
 	SLIPEncodedSerial* ser;
 	IPAddress server;
 	uint16_t port;
+	hookCallback hook;
 };
 
 #endif /* FADEROSC_H */
