@@ -62,6 +62,8 @@ public:
 	FaderOSC()
 	: messages(),
 	  old_vals(),
+	  windows(),
+	  window_ptrs(),
 	  udp(NULL),
 	  tcp(NULL),
 	  ser(NULL),
@@ -69,6 +71,12 @@ public:
 	  port(7600),
 	  hook(NULL)
 	{
+		for (int i=0; i<NUM_POTS; i++) {
+			window_ptrs[i] = 0;
+			for (int j=0; j<window_size; j++) {
+				windows[i][j] = 0;
+			}
+		}
 	}
 	~FaderOSC() {
 	}
@@ -158,8 +166,27 @@ public:
 	
 		for (int i=0; i<NUM_POTS; i++) {
 			int val = analogRead(i);
-			//TODO: calc average val from previous values
-			if (abs(val - old_vals[i]) > 5) {
+			windows[i][window_ptrs[i]] = val;
+			window_ptrs[i]++;
+			window_ptrs[i] %= window_size;
+			if (val < 28) {
+				val = 0;
+			} else if (val > 1018) {
+				val = 1023;
+			} else {
+				val = 0;
+				for (int j=0; j<window_size; j++) {
+					val += windows[i][j];
+				}
+				val /= window_size;
+			}
+			if (i == -1) {
+				Serial.print("i=");
+				Serial.print(i);
+				Serial.print(" val=");
+				Serial.println(val);
+			}
+			if (abs(val - old_vals[i]) > 2) {
 				messages[i].empty();
 				old_vals[i] = val;
 				float f = val / (float)1023.0;
@@ -193,8 +220,12 @@ public:
 	}
 
 private:
+	static const int window_size = 10;
+
 	OSCMessage messages[NUM_POTS];
 	int old_vals[NUM_POTS];
+	int windows[NUM_POTS][window_size];
+	int window_ptrs[NUM_POTS];
 	EthernetUDP* udp;
 	EthernetClass* tcp;
 	SLIPEncodedSerial* ser;
