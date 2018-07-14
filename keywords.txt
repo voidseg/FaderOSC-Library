@@ -1,4 +1,4 @@
 FaderOSC	KEYWORD1
-useUDP		KEYWORD2
+useUDP	KEYWORD2
 useSerial	KEYWORD2
 iteration	KEYWORD2
